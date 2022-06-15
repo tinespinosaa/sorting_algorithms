@@ -1,75 +1,47 @@
 #include "sort.h"
 
 /**
- * quick_sort - sorts an array in ascending order
- * @array: Array of integers
- * @size: Size of array
- * Return: void
+ * quick_sort - Sort an array of integers in ascending order using the
+ * Quick sort algorithm.
+ * @array: array
+ * @size: size of array
  */
-
 void quick_sort(int *array, size_t size)
 {
+	size_t L, R, P = size - 1;
+	int temp;
+	static int *a, S = -1;
+
 	if (!array || size < 2)
 		return;
-
-	quick_recursive(array, 0, size - 1, size);
-}
-
-/**
- * quick_recursive - Before / After partition
- * @array: Array
- * @low: Starting index
- * @high: Ending index
- * @size: Size of array
- * Return: Void
- */
-
-void quick_recursive(int *array, int low, int high, size_t size)
-{
-	int lomuto = 0;
-
-	if (low < high)
+	if (S == -1)
 	{
-		lomuto = partition(array, low, high, size);
-		quick_recursive(array, low, lomuto - 1, size);
-		quick_recursive(array, lomuto + 1, high, size);
+		a = array;
+		S = size;
 	}
-}
-
-/**
- * partition - Using lomuto partition
- * @array: Array
- * @low: Starting index
- * @high: Ending index
- * @size: Size of array
- * @size: Size of array
- * Return: Pivot
- */
-
-int partition(int *array, int low, int high, size_t size)
-{
-	int pivot = 0, i = 0, x = 0, tmp = 0;
-
-	pivot = array[high];
-	i = low;
-
-	for (x = low; x < high; x++)
+	while (1)
 	{
-		if (array[x] < pivot)
+		for (L = 0; array[L] < array[P]; L++)
+			continue;
+		for (R = P - 1; array[R] > array[P] && R > 0; R--)
+			continue;
+		if (L < R)
 		{
-			tmp = array[i];
-			array[i] = array[x];
-			array[x] = tmp;
-			if (tmp != array[i])
-				print_array(array, size);
-			i++;
+			temp = array[L];
+			array[L] = array[R];
+			array[R] = temp;
+			print_array(a, S);
 		}
+		else
+			break;
 	}
-	tmp = array[i];
-	array[i] = array[high];
-	array[high] = tmp;
-
-	if (tmp != array[i])
-		print_array(array, size);
-	return (i);
+	if (L != P)
+	{
+		temp = array[L];
+		array[L] = array[P];
+		array[P] = temp;
+		print_array(a, S);
+	}
+	quick_sort(array + L + 1, size - (L + 1));
+	quick_sort(array, L);
 }
