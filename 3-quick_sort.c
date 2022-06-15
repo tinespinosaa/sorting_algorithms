@@ -1,47 +1,81 @@
 #include "sort.h"
 
 /**
- * quick_sort - Sort an array of integers in ascending order using the
- * Quick sort algorithm.
+ * swap - swaps 2 values
  * @array: array
- * @size: size of array
+ * @size: array size
+ * @a: 1st value to swap
+ * @b: 2nd value to swap
+ *
+ * Return: void
  */
+
+void swap(int *array, size_t size, int *a, int *b)
+{
+	if (*a != *b)
+	{
+		*a = *a + *b;
+		*b = *a - *b;
+		*a = *a - *b;
+		print_array(array, size);
+	}
+}
+
+/**
+ * lomuto_partition - parts an array
+ * @array: array
+ * @size: array size
+ * @start: array beginning
+ * @end: array end
+ *
+ * Return: void
+ */
+
+size_t lomuto_partition(int *array, size_t size, ssize_t start, ssize_t end)
+{
+	ssize_t i, j;
+	int pivot = array[end];
+
+	for (i = j = start; j < end; j++)
+		if (array[j] < pivot)
+			swap(array, size, &array[j], &array[i++]);
+	swap(array, size, &array[i], &array[end]);
+	return (i);
+}
+
+/**
+ * quicksort - sorts the array
+ * @array: array
+ * @size: array size
+ * @start: array beginning
+ * @end: array end
+ *
+ * Return: void
+ */
+
+void quicksort(int *array, size_t size, ssize_t start, ssize_t end)
+{
+	if (start < end)
+	{
+		size_t s = lomuto_partition(array, size, start, end);
+
+		quicksort(array, size, start, s - 1);
+		quicksort(array, size, s + 1, end);
+	}
+}
+
+/**
+ * quick_sort - sorts an array of integers in ascending order
+ * using the Quick sort algorithm
+ * @array: array to sort
+ * @size: array size
+ *
+ * Return: void
+ */
+
 void quick_sort(int *array, size_t size)
 {
-	size_t L, R, P = size - 1;
-	int temp;
-	static int *a, S = -1;
-
-	if (!array || size < 2)
+	if (!array || !size)
 		return;
-	if (S == -1)
-	{
-		a = array;
-		S = size;
-	}
-	while (1)
-	{
-		for (L = 0; array[L] < array[P]; L++)
-			continue;
-		for (R = P - 1; array[R] > array[P] && R > 0; R--)
-			continue;
-		if (L < R)
-		{
-			temp = array[L];
-			array[L] = array[R];
-			array[R] = temp;
-			print_array(a, S);
-		}
-		else
-			break;
-	}
-	if (L != P)
-	{
-		temp = array[L];
-		array[L] = array[P];
-		array[P] = temp;
-		print_array(a, S);
-	}
-	quick_sort(array + L + 1, size - (L + 1));
-	quick_sort(array, L);
+	quicksort(array, size, 0, size - 1);
 }
