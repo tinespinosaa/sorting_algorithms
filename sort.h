@@ -1,13 +1,8 @@
-#ifndef SORT_H
-#define SORT_H
+#ifndef _SORT_H_
+#define _SORT_H_
 #include <stdio.h>
 #include <stdlib.h>
-#include <stddef.h>
 
-
-
-
-/* structs */
 /**
  * struct listint_s - Doubly linked list node
  *
@@ -22,25 +17,18 @@ typedef struct listint_s
 	struct listint_s *next;
 } listint_t;
 
-#define true (1)
-#define false  (!true)
-#include "macro_functions.h"
-
-
-/* prototypes */
-void print_list(const listint_t *list);
+/*Function of Holberton*/
 void print_array(const int *array, size_t size);
+void print_list(const listint_t *list);
+
+/*Function of sorting algorithms*/
 void bubble_sort(int *array, size_t size);
 void insertion_sort_list(listint_t **list);
 void selection_sort(int *array, size_t size);
 void quick_sort(int *array, size_t size);
-void shell_sort(int *array, size_t size);
-void cocktail_sort_list(listint_t **list);
+int partition(int *array, int low, int high, size_t size);
+void quicksort(int *array, int low, int high, size_t size);
 void counting_sort(int *array, size_t size);
-void merge_sort(int *array, size_t size);
-void heap_sort(int *array, size_t size);
-void radix_sort(int *array, size_t size);
-void bitonic_sort(int *array, size_t size);
-void quick_sort_hoare(int *array, size_t size);
-
+int maximo(int *array, size_t size);
+void shell_sort(int *array, size_t size);
 #endif
